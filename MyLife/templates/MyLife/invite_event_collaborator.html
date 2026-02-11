@@ -1,0 +1,25 @@
+<!-- MyLife/templates/MyLife/invite_event_collaborator.html -->
+<!--form to invite a collaborator to an event -->
+{% extends "MyLife/base.html" %}
+{% block content %}
+  <h1>Invite someone to “{{ event.event_title }}”</h1>
+
+  <!-- if there was an error sending invite, print error -->
+
+  {% if error %}
+    <p class="error">{{ error }}</p>
+  {% endif %}
+
+<!-- display the HTML form -->
+  <form method="post">
+    {% csrf_token %} <!-- token -->
+    <label for="invitee_pk">Pick someone:</label>
+    <select name="invitee_pk" id="invitee_pk"> <!-- select the invitee-->
+      <!-- for each profile, just display the name-->
+      {% for profile in candidates %}
+        <option value="{{ profile.pk }}">{{ profile.get_name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="edit-button">Send Invite</button> <!-- submit -->
+  </form>
+{% endblock %}

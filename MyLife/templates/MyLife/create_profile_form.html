@@ -1,0 +1,25 @@
+<!-- MyLife/create_profile_form.html 
+    display the HTML form to create a new Profile object.
+-->
+{% extends 'MyLife/base.html' %}
+
+{% block content %}
+<h1> Welcome to your new calendar! Create your profile: </h1>
+
+<!-- display the HTML form -->
+<form action="{% url 'create_profile' %}" method="POST"
+enctype="multipart/form-data">
+    {% csrf_token %} <!-- token -->
+    <table>
+        {% if create_user_form %}
+        {{create_user_form.as_table}} <!-- display user creation form -->
+        {% else %}
+        You are already logged in. Proceed with creating your profile
+        {% endif %}
+        {{form.as_table}} <!-- display form -->
+    </table>
+
+    <input type="submit" name="submit" value="Submit"> <!-- submit buttom -->
+    <input type="button" name="cancel" value="Cancel" onclick="history.back();"> <!-- cancel button -->
+</form>
+{% endblock %}

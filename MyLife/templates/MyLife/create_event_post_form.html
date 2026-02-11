@@ -1,0 +1,23 @@
+<!-- templates/create_event_post_form.html -->
+<!-- MyLife/templates/MyLife/create_event_post_form.html -->
+<!--display the HTML form to create a new EventPost object-->
+
+{% extends "MyLife/base.html" %}
+{% block content %}
+<h1>Add a post to "{{ event.event_title }}"</h1>
+
+<!-- display the HTML form -->
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %} <!-- Token -->
+  {{ form.as_p }} <!-- the form -->
+  {{ media_formset.management_form }}
+  {{ media_formset.non_form_errors }}
+  <!-- for each media in media form set -->
+  {% for f in media_formset %}
+      <!-- render each media field inside <p> tags -->
+      {{ f.as_p }}
+  {% endfor %}
+
+  <button type="submit" class="edit-button">Publish</button>
+</form>
+{% endblock %}

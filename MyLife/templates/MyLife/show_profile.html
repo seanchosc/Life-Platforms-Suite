@@ -1,0 +1,113 @@
+<!-- 
+Create template to show one profile:
+(start from the show_all_profiles.html, remove loop and add class="featured")
+MyLife/template/MyLife/show_profile.html
+ --> 
+{% extends 'MyLife/base.html' %} <!-- inherit layout -->
+{% load static %} <!-- enable static files -->
+
+{% block content %} <!-- page content -->
+<h1>{{ profile.first_name }} {{ profile.last_name }}</h1> <!-- name -->
+
+<div class="profile-info"> <!-- container -->
+    {% if profile.profile_photo %} <!-- has photo -->
+        <img src="{{ profile.profile_photo.url }}" alt="photo"> <!-- show photo -->
+    {% else %}
+        <p>No photo</p> <!-- fallback -->
+    {% endif %}
+
+    <p>Email <a href="mailto:{{ profile.email_address }}">{{ profile.email_address }}</a></p> <!-- email -->
+    <p>Timezone {{ profile.timezone }}</p> <!-- timezone -->
+
+    {% if request.user == profile.user %} <!-- owner only -->
+        <p><a href="{% url 'update_profile' %}" class="edit-button">Edit Profile</a></p> <!-- edit link -->
+    {% endif %}
+</div>
+<div class="profile-sections">
+    <div class="user-events"> <!-- events list -->
+      <h2>Pending Event Invites</h3>
+        <ul>
+          {% for ei in request.user.project_profile.received_event_invites.all %}
+            {% if ei.invite_status == 'pending' %}
+              <li>
+                <a href="{% url 'event_details' ei.event.pk %}">
+                  {{ ei.event.event_title }}
+                </a>
+                — invited by {{ ei.inviter.get_name }}
+                — <a href="{% url 'respond_event_invite' ei.pk 'accept' %}">accept</a> | <a href="{% url 'respond_event_invite' ei.pk 'reject' %}">reject</a>
+              </li>
+            {% endif %}
+          {% empty %}
+            <li>No outstanding event invites.</li>
+          {% endfor %}
+        </ul>
+        <h2>Your Events</h2> <!-- section header -->
+        {% if events %} <!-- has events -->
+            <ul>
+            {% for event in events %} <!-- loop events -->
+                <li>
+                <a href="{% url 'event_details' event.pk %}"> <!-- edit link -->
+                    {{ event.event_title }} on {{ event.event_date }} <!-- title & date -->
+                </a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No events yet</p> <!-- fallback -->
+        {% endif %}
+        {% if request.user == profile.user %} <!-- owner only -->
+            <p><a href="{% url 'create_event' %}">Create a new event</a></p> <!-- new event -->
+        {% endif %}
+    </div>
+
+
+    <div class="user-collaborators">
+      <h3>Pending Collaborator Invites</h3>
+      <ul>
+        <li>
+          {% for inv in request.user.project_profile.received_collaborator_invites.all %}
+            {% if inv.invite_status == 'pending' %}
+              <p>
+                {{ inv.inviter.get_name }} sent an invite! ({{inv.collaborator_type}})
+                — <a href="{% url 'respond_collab_invite' inv.pk 'accept' %}">accept</a>
+                  | <a href="{% url 'respond_collab_invite' inv.pk 'reject' %}">reject</a>
+              </p>
+            {% endif %}
+          {% empty %}
+            <li>No pending event invites.</li>
+          {% endfor %}        
+      </ul>          
+        </li>
+
+
+        <h2>Your Collaborators</h2>
+    
+        {% if collaborators %}
+        <ul>
+          {% for c in collaborators %}
+            {% if c.inviter == profile %}
+              {% with other=c.invitee %}
+                <li>
+                  <a href="{% url 'show_person' other.pk %}">
+                    {{ other.get_name }} – {{ c.get_collaborator_type_display }}
+                  </a>
+                </li>
+              {% endwith %}
+            {% else %}
+              {% with other=c.inviter %}
+                <li>
+                  <a href="{% url 'show_person' other.pk %}">
+                    {{ other.get_name }} – {{ c.get_collaborator_type_display }}
+                  </a>
+                </li>
+              {% endwith %}
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No collaborators yet.</p>
+      {% endif %}
+    </div>    
+</div>
+
+{% endblock %} <!-- end content -->

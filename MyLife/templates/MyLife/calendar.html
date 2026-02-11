@@ -1,0 +1,30 @@
+<!-- templates/calendar.html -->
+<!-- MyLife/templates/MyLife/calendar.html -->
+{% extends "MyLife/base.html" %}
+{% block content %}
+  <h2>Your calendar</h2>
+
+  <!-- FullCalendar container -->
+  <div id="calendar"></div>
+
+  <!-- FullCalendar and moment.js that I found after searching easiest Calendars to implement -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+
+  <script>
+    // Initialize calendar once Document Object Model is ready
+    document.addEventListener("DOMContentLoaded", function () {
+      // “document” is the root of the DOM
+      // wait for it to finish loading so that all elements exist before we do anything to them
+
+      const calendarEl = document.getElementById("calendar");
+      // Create calendar in the #calendar element
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: "dayGridMonth",
+        events: "{% url 'events_json' %}",    // fetch the events JSON feed
+      });
+      // render the calendar into the page
+      calendar.render(); 
+    });
+  </script>
+{% endblock %}

@@ -1,0 +1,221 @@
+/* so calendar global palette */
+:root{
+  --c-bg:        #e8faff;   /* very light baby blue */
+  --c-bg-alt:    #ffffff;
+  --c-accent:    #2bb1b3;   /* teal action colour */
+  --c-accent-alt:#a5e8e5;   /* pale teal */
+  --c-text:      #042a2b;   /* near black */
+}
+/* resets basics */
+*,
+*::before,
+*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{
+  font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+       "Helvetica Neue",Arial,sans-serif;
+  background:var(--c-bg);
+  color:var(--c-text);
+}
+
+/* structural elements */
+header{
+  background:var(--c-accent-alt);
+  padding:1rem 2rem;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+header h1{margin:0;font-size:1.8rem;font-weight:600}
+
+main{
+  max-width:1100px;
+  margin:2rem auto;
+  padding:0 1rem;
+}
+
+/* global typestyles */
+h1{margin:0 0 .75rem;font-size:2rem}
+h2{margin:2rem 0 .5rem;font-size:1.35rem;color:#055}
+a{color:var(--c-accent);text-decoration:none}
+a:hover,a:focus{text-decoration:underline}
+
+/* navigation */
+nav ul{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:flex;
+  gap:1.5rem;
+  flex-wrap:wrap;
+}
+nav ul li a{
+  display:block;
+  padding:.5rem 1rem;
+  border-radius:8px;
+  transition:background .25s;
+}
+nav ul li a:hover,
+nav ul li a:focus{
+  background:rgba(0,0,0,.05);
+}
+
+/* forms tables */
+table{border-collapse:collapse;width:100%;max-width:640px}
+th,td{padding:.5rem .75rem;text-align:left}
+input[type=text],
+input[type=email],
+input[type=time],
+input[type=date],
+select,
+textarea{
+  width:100%;
+  padding:.45rem .6rem;
+  border:1px solid #b6dfe3;
+  border-radius:6px;
+  background:#fff;
+}
+input[type=file]{margin:.25rem 0}
+input[type=submit],
+input[type=button],
+button{
+  background:var(--c-accent);
+  color:#fff;
+  border:0;
+  padding:.6rem 1.3rem;
+  border-radius:8px;
+  cursor:pointer;
+  transition:background .25s;
+}
+input[type=submit]:hover,
+input[type=button]:hover,
+button:hover{
+  background:#239a9c;
+}
+
+/* profile page layouts */
+.profile-info{
+  display:flex;
+  align-items:center;
+  gap:2rem;
+  margin-bottom:2rem;
+}
+.profile-info img{
+  width:140px;height:140px;
+  object-fit:cover;
+  border-radius:50%;
+  border:4px solid var(--c-accent-alt);
+}
+
+.profile-sections{
+  display:flex;
+  gap:2rem;
+  align-items:flex-start;
+}
+
+.profile-sections > .user-events,
+.profile-sections > .user-collaborators{
+  flex:1 1 0;
+  min-width:260px;
+}
+
+@media (max-width: 700px){
+  .profile-sections{
+    flex-direction:column;
+  }
+}
+
+/* lists laid out horizontally with wrapping */
+ul{
+  padding:0;
+  list-style:none;
+}
+.user-events ul,
+.dashboard-section ul,
+main ul:not(.fc-daygrid-day-events){
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:.75rem 1.25rem;
+}
+.user-events li,
+.dashboard-section li,
+main li{
+  background:var(--c-bg-alt);
+  padding:.75rem 1rem;
+  border-radius:8px;
+  box-shadow:0 1px 3px rgba(0,0,0,.05);
+}
+
+/* calendar container */
+#calendar{
+  margin-top:1rem;
+  background:var(--c-bg-alt);
+  padding:1rem;
+  border-radius:8px;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+
+/* responsive tweaks */
+@media (max-width:600px){
+  header h1{font-size:1.5rem}
+  nav ul{gap:.75rem}
+  .profile-info{flex-direction:column;align-items:flex-start}
+}
+
+/* simple white pill style button */
+.edit-button {
+display: inline-block;
+padding: 0.45rem 1.1rem;
+background: #ffffff;
+color: #0077aa;
+border: 1px solid #ccd2d9;
+border-radius: 8px;
+text-decoration: none;
+font-weight: 500;
+transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.edit-button:hover,
+.edit-button:focus {
+background: #f3f6f8;
+box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+/* event feed */
+.event-feed {
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+/* feed item styling */
+.feed-item {
+border: 1px solid #dcdcdc;
+border-radius: 6px;
+padding: 0.75rem 1rem;
+margin-bottom: 0.75rem;
+background: #ffffff;
+}
+
+/* feed content text */
+.feed-content {
+margin: 0 0 0.5rem 0;
+}
+
+/* media list in feed */
+.feed-media {
+list-style: none;
+padding-left: 0;
+margin: 0;
+}
+
+/* image display in feed */
+.feed-image {
+max-width: 100%;
+height: auto;
+border-radius: 4px;
+margin: 0.5em 0;
+}
+
+/* media list items */
+.feed-media li {
+margin: 0.25rem 0;
+}

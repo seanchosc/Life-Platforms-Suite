@@ -1,0 +1,17 @@
+<!-- templates/home.html -->
+<!-- MyLife/templates/MyLife/home.html -->
+<!--display the home (base) page -->
+
+{% extends 'MyLife/base.html' %}
+{% block content %}
+<!-- single navigation link-->
+  <nav>
+    <ul>
+      <!-- for if the user has created a user account but has not yet created a profile-->
+       <!-- then the user must be prompted to make a profile -->
+      {% if request.user.is_authenticated and not has_profile %}
+        <li><a href="{% url 'create_profile' %}">Create a profile!</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endblock %}

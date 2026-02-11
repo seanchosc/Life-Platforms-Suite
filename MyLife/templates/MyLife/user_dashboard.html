@@ -1,0 +1,92 @@
+<!-- MyLife/templates/MyLife/user_dashboard.html -->
+<!-- display user dashboard with profile, events, invites, collaborators -->
+{% extends 'MyLife/base.html' %}
+{% block content %}
+
+<!--if no profile yet, ask user to create one --> 
+{% if not has_profile %}
+  <h2>You do not have a profile yet.</h2>
+  <p>
+    You cannot access the user dashboard without a profile. 
+    Please create one to get started.
+    <a href="{% url 'create_profile' %}">Create a Profile</a>
+  </p>
+
+{% else %}
+  <h1>{{profile.get_name}}'s Dashboard</h1>
+
+  <h2>Your Events</h2>
+  <ul>
+  <!-- for each event in events list-->
+  {% for event in events %}
+    <!-- print out the event title and the date-->
+    <li>{{event.event_title}} on {{event.event_date}}</li>
+  {% empty %}
+    <li>No events found.</li>
+  {% endfor %}
+  </ul>
+
+  <h2>Pending Event Invites (Received)</h2>
+  <ul>
+  <!-- for each invite in received pending invites-->
+  {% for invite in pending_event_invites_received %}
+    <!-- print out the invite-->
+    <li>From {{invite.inviter.get_name}} — Event: {{invite.event.event_title}}</li>
+  {% empty %}
+    <li>No pending received event invites.</li>
+  {% endfor %}
+  </ul>
+
+  <h2>Pending Event Invites (Sent)</h2>
+  <ul>
+  <!-- for each invite in sent pending invites -->
+  {% for invite in pending_event_invites_sent %}
+    <!-- print out the invite -->
+    <li>To {{invite.invitee.get_name}} — Event: {{invite.event.event_title}}</li>
+  {% empty %}
+    <li>No pending sent event invites.</li>
+  {% endfor %}
+  </ul>
+
+  <h2>Accepted Collaborators (Friends/Work)</h2>
+  <ul>
+  <!-- for each collaborator in collaborators-->
+  {% for collab in collaborators %}
+    <li>
+      <!-- choose correct name depending on inviter vs invitee -->
+      {% if collab.inviter == profile.user %}
+        {{collab.invitee.get_name}}
+      {% else %}
+        {{collab.inviter.get_name}}
+      {% endif %}
+      ({{collab.collaborator_type}})
+    </li>
+  {% empty %}
+    <li>No accepted collaborators.</li>
+  {% endfor %}
+  </ul>
+
+  <h2>Pending Collaborator Invites (Sent)</h2>
+  <ul>
+  <!-- for each collaborator in pending sent collaborator invites-->
+  {% for collab in pending_collab_invites_sent %}
+    <!-- print their name and collaborator type-->
+    <li>To {{collab.invitee.get_name}} ({{collab.collaborator_type}})</li>
+  {% empty %}
+    <li>No pending sent collaborator invites.</li>
+  {% endfor %}
+  </ul>
+
+  <h2>Pending Collaborator Invites (Received)</h2>
+  <ul>
+  <!-- for each collaborator in pending received collaborator invites -->
+  {% for collab in pending_collab_invites_received %}
+    <!-- print their name and tpye-->
+    <li>From {{collab.inviter.get_name}} ({{collab.collaborator_type}})</li>
+  {% empty %}
+    <li>No pending received collaborator invites.</li>
+  {% endfor %}
+  </ul>
+{% endif %}
+
+{% endblock %}

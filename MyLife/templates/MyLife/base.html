@@ -1,0 +1,55 @@
+<!-- templates/base.html -->
+<!-- MyLife/templates/MyLife/base.html -->
+{% load static %} <!-- load static files -->
+<!DOCTYPE html>
+
+<!-- head -->
+<head>
+    <meta charset="utf-8"> <!-- charset -->
+    <title>SoCalendar</title> <!-- page title -->
+    <link rel="stylesheet" href="{% static 'sc_styles.css' %}"> <!-- css link -->
+</head>
+<!-- body -->
+<body>
+    <header>
+        <h1>SoCalendar</h1> <!-- site name -->
+    </header>
+    <!-- navigation links-->
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <!-- if the user is authenticated, they have an account-->
+            {% if request.user.is_authenticated %}
+
+                <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
+                <li><a href="{% url 'calendar' %}">Calendar</a></li> 
+
+                <!-- if the user has a profile, then can show their profile page-->
+                {% if has_profile %}             
+                    <li><a href="{% url 'show_profile' %}">Profile</a></li>
+                {% endif %}
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            <!-- else, they must first either login or register for an account-->
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Sign Up</a></li>
+            {% endif %}
+        </ul> 
+    </nav>
+
+    <!-- shows if logged in(and who) or not-->
+    <nav>
+        {% if request.user.is_authenticated %}
+            Logged in user: {{ request.user.username }} <!-- show user -->
+        {% else %} 
+            Not logged in
+        {% endif %}
+    </nav>
+
+    <main>
+        <!-- content block -->
+        {% block content %}
+        {% endblock %} 
+    </main>
+</body>
+</html>

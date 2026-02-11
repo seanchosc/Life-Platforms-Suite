@@ -1,0 +1,14 @@
+<!-- templates/event_invite_form.html -->
+<!-- MyLife/templates/MyLife/event_invite_form.html -->
+<!--display the HTML form to create a new event invite-->
+
+{% extends "MyLife/base.html" %}
+{% block content %}
+<h2>Invite someone to {{ event.event_title }}</h2>
+
+<!-- display the HTML form -->
+<form method="post">{% csrf_token %}
+    {{ form.as_p }} <!-- display the form -->
+    <button type="submit">Send</button> <!-- submit -->
+</form>
+{% endblock %}

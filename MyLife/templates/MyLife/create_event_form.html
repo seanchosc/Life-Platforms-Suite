@@ -1,0 +1,18 @@
+<!-- templates/collab_invite_form.html -->
+<!-- MyLife/templates/MyLife/collab_invite_form.html -->
+<!--display the HTML form to create a new Event object-->
+{% extends 'MyLife/base.html' %}
+
+{% block content %}
+<h1> Create a new event </h1>
+<!-- display the HTML form -->
+<form action="{% url 'create_event' %}" method="POST">    
+    {% csrf_token %} <!-- token -->
+    <table> 
+        {{ form.as_table }} <!-- display form fields -->
+    </table>
+
+    <input type="submit" name="submit" value="Submit"> <!-- submit button -->
+    <input type="button" name="cancel" value="Cancel" onclick="history.back();"> <!-- cancel button -->
+</form>
+{% endblock %}

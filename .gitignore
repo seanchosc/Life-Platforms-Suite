@@ -1,0 +1,12 @@
+# Python 
+venv/
+*.pyc
+__pycahce__/
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# System
+.DS_Store

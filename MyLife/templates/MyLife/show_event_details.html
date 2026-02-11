@@ -1,0 +1,107 @@
+<!-- MyLife/templates/MyLife/show_event_details.html -->
+<!-- display the details of an event, including feed -->
+
+{% extends 'MyLife/base.html' %}
+{% block content %}
+
+<!-- event title -->
+<h1>{{ event.event_title }}</h1>
+
+<!-- event descriptions-->
+<p><strong>Date:</strong> {{ event.event_date }}</p>
+<p><strong>Time:</strong> {{ event.event_start_time }} – {{ event.event_end_time }}</p>
+<p><strong>Description:</strong> {{ event.event_description }}</p>
+<p><strong>Created by:</strong> {{ event.event_creator.get_name }}</p>
+<p>Event type: {{event.event_type}}</p>
+
+<!-- To edit the event -->
+{% if request.user == event.event_creator.user %}
+  <p>
+    <a href="{% url 'update_event' event.pk %}" class="edit-button"> Edit event </a>
+  </p>
+{% endif %}
+
+<!-- accepted collaborators for the given event-->
+<h2>Accepted Collaborators</h2>
+<ul>
+  <!-- for each event collaborator in collaborators-->
+  {% for ec in collaborators %}
+    <!-- print their name and role for the event-->
+    <li>{{ ec.collaborator.get_name }} ({{ ec.role }})</li>
+  {% empty %}
+    <!-- else its empty-->
+    <li>No collaborators yet.</li>
+  {% endfor %}
+</ul>
+
+<!-- Pending invites for an event-->
+<h2>Pending Invites</h2>
+<ul>
+  <!-- for each invite in pending invites-->
+  {% for invite in pending_invites %}
+    <li>
+      <!-- print who was invited and the invite status-->
+      To {{ invite.invitee.get_name }} – status: {{ invite.invite_status }}
+    </li>
+  {% empty %}
+    <!-- else no pending invites-->
+    <li>No pending invites for this event.</li>
+  {% endfor %}
+</ul>
+
+<!-- if a user has permission to invite-->
+{% if can_invite %}
+<!-- display invite button-->
+<p>
+  <a href="{% url 'send_event_invite' event.pk %}" class="edit-button">Invite Collaborator(s)</a>
+</p>
+{% endif %}
+
+
+<!-- event feed (the posts and media content attached to a given event)-->
+<h2>Event Feed</h2>
+
+<!-- if posts exist in the feed-->
+{% if posts %}
+  <div class="event-feed">
+    <!-- for each post in posts-->
+    {% for post in posts %}
+      <article class="feed-item">
+          <!-- if the post contains text content -->
+          {% if post.post_text_content %}
+            <!-- print it-->
+            <p class="feed-content">{{ post.post_text_content }}</p>
+          {% endif %}
+          <!-- if media content exists -->
+          {% if post.media.all %}
+            <ul class="feed-media">
+              <!-- for each file in the media content-->
+              {% for m in post.media.all %}
+                <li><!-- output the media file-->
+                  <img src="{{ m.post_media.url }}" alt="Event post image" class="feed-image" />
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          <!-- attach the timestamp of the feed post-->
+        <b>{{post.post_author}} at {{post.timestamp}}</b>    
+      </article>
+      
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No posts yet.</p>
+{% endif %}
+
+<!-- if you have permission to post-->
+{% if can_post %}
+  <p>
+    <!-- can add post -->
+    <a class="edit-button"
+       href="{% url 'event_posts' event_pk=event.pk %}">
+        + Add post
+    </a>
+  </p>
+{% endif %}
+
+{% endblock %}

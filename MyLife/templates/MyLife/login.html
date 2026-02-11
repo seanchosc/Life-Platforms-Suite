@@ -1,0 +1,31 @@
+<!-- MyLife/templates/MyLife/login.html -->
+ <!-- this is the login page (by form)-->
+{% extends 'MyLife/base.html' %}
+
+{% block content %}
+
+<h1>Login to SoCalendar</h1>
+
+<!-- display the HTML form -->
+<form action="{% url 'login' %}" method="POST">
+    {% csrf_token %} <!-- token-->
+    {{form}} <!-- display form -->
+    <input type="submit" value="Login">
+
+    <!-- if the URL provides a next parameter -->
+    {% if request.GET.next %}
+
+    <!-- redirect to that URL-->
+    <input type="hidden" name="next" value="{{request.GET.next}}">
+
+    <!-- else, go home-->
+    {% else %}
+    <input type="hidden" name="next" value="{% url 'home' %}">
+    {% endif %}
+</form>
+<hr>
+<!-- create an account if user doesnt have one -->
+Don't have an account? <br>
+Create one here: <span class ="small"> <a href="{% url 'register' %}">Register</a></span>
+
+{% endblock %}
