@@ -1,1 +1,1 @@
-# Life Platforms & Compliance Suite
+# Life Platforms Suite
